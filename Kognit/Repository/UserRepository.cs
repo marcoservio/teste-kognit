@@ -20,9 +20,24 @@ namespace Kognit.Repository
             }
         }
 
+        public User GetUserById(int id)
+        {
+            return _user.GetUserById(id);
+        }
+
         public void InserirUser(User user)
         {
             _user.InsertUser(user);
+        }
+
+        public void Delete(int id)
+        {
+            _user.Delete(id);
+        }
+
+        public void Update(User user)
+        {
+            _user.Update(user);
         }
     }
 }

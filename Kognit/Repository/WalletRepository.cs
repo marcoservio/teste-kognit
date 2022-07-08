@@ -25,9 +25,24 @@ namespace Kognit.Repository
             return _wallet.GetWalletsByUser(id);
         }
 
+        public Wallet GetWalletById(int id)
+        {
+            return _wallet.GetWalletById(id);
+        }
+
         public void InserirWallet(Wallet wallet)
         {
             _wallet.InsertWallet(wallet);
+        }
+
+        public void Delete(int id)
+        {
+            _wallet.Delete(id);
+        }
+
+        public void Update(Wallet wallet)
+        {
+            _wallet.Update(wallet);
         }
     }
 }

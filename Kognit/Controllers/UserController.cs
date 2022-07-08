@@ -15,16 +15,61 @@ namespace Kognit.Controllers
             _userRepository = new UserRepository();
         }
 
-        [HttpGet("getUser")]
+        [HttpGet("getUsers")]
         public ActionResult<IEnumerable<User>> Get()
         {
-            return _userRepository.GetUsers;
+            var users = _userRepository.GetUsers;
+
+            if (users == null)
+                return NotFound();
+
+            return users;
+        }
+
+        [HttpGet("getUserById")]
+        public ActionResult<User> GetById(int id)
+        {
+            var user = _userRepository.GetUserById(id);
+
+            if (user == null)
+                return NotFound();
+
+            return user;
         }
 
         [HttpPost("createUser")]
-        public void Create([FromBody] User user)
+        public ActionResult Create([FromBody] User user)
         {
+            if (user == null)
+                return NotFound();
+
             _userRepository.InserirUser(user);
+
+            return NoContent();
+        }
+
+        [HttpDelete("deleteUser")]
+        public ActionResult<User> Delete(int id)
+        {
+            var userToDelete = _userRepository.GetUserById(id);
+
+            if (userToDelete == null)
+                return NotFound();
+
+            _userRepository.Delete(userToDelete.Id);
+
+            return NoContent();
+        }
+
+        [HttpPut("updateUser")]
+        public ActionResult Update(int id, [FromBody] User user)
+        {
+            if (id != user.Id)
+                return BadRequest();
+
+            _userRepository.Update(user);
+
+            return NoContent();
         }
     }
 }
