@@ -9,10 +9,12 @@ namespace Kognit.Controllers
     public class UserController : Controller
     {
         private readonly UserRepository _userRepository;
+        private readonly WalletRepository _walletRepository;
 
         public UserController()
         {
             _userRepository = new UserRepository();
+            _walletRepository = new WalletRepository();
         }
 
         [HttpGet("getUsers")]
@@ -52,9 +54,18 @@ namespace Kognit.Controllers
         public ActionResult<User> Delete(int id)
         {
             var userToDelete = _userRepository.GetUserById(id);
+            var wallets = _walletRepository.GetWalletsByUser(id);
 
             if (userToDelete == null)
                 return NotFound();
+
+            if(wallets != null)
+            {
+                foreach(var wallet in wallets)
+                {
+                    _walletRepository.Delete(wallet.Id);
+                }
+            }
 
             _userRepository.Delete(userToDelete.Id);
 
